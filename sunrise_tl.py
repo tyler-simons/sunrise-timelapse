@@ -51,5 +51,5 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
 )
 client = storage.Client(credentials=credentials, project=GCP_PROJECT)
 bucket = client.get_bucket(GCP_GCS_BUCKET)
-blob = bucket.blob(GCP_GCS_BUCKET)
+blob = bucket.blob(gif_name)
 blob.upload_from_filename(gif_name)
