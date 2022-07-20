@@ -2,7 +2,7 @@ from picamera import PiCamera
 import time
 from datetime import datetime as dtdt
 import datetime
-import imageio
+import imageio.v2 as imageio
 import os, shutil
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
@@ -36,7 +36,7 @@ while int(time_end) > dtdt.now().hour:
 # Compile into a gif
 images = []
 for filename in photo_folder:
-    images.append(imageio.imread(filename))
+    images.append(imageio.imread(filename, plugin='DICOM'))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
 gif_name = photo_folder+f'{todays_date}.gif'
