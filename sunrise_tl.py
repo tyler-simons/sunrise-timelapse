@@ -42,8 +42,9 @@ for filename in os.listdir(photo_folder):
     images.append(imageio.imread(photo_folder+filename))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
-gif_name = photo_folder+f'{todays_date}.gif'
-imageio.mimsave(gif_name, images)
+gif_name = f'{todays_date}.gif'
+
+imageio.mimsave(photo_folder + gif_name, images)
 
 # Push to GCP
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
