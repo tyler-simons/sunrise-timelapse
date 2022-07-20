@@ -13,17 +13,19 @@ photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
 GCP_GCS_BUCKET = "timelapseposter"
+delete_folder = False
 
 # Clear out the folder
-for filename in os.listdir(photo_folder):
-    file_path = os.path.join(photo_folder, filename)
-    try:
-        if os.path.isfile(file_path) or os.path.islink(file_path):
-            os.unlink(file_path)
-        elif os.path.isdir(file_path):
-            shutil.rmtree(file_path)
-    except Exception as e:
-        print('Failed to delete %s. Reason: %s' % (file_path, e))
+if delete_folder:
+    for filename in os.listdir(photo_folder):
+        file_path = os.path.join(photo_folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 # Take the pictures
 while int(time_end) > dtdt.now().minute:
@@ -37,7 +39,7 @@ while int(time_end) > dtdt.now().minute:
 # Compile into a gif
 images = []
 for filename in os.listdir(photo_folder):
-    images.append(imageio.imread(filename, plugin='DICOM'))
+    images.append(imageio.imread(photo_folder+filename, plugin='DICOM'))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
 gif_name = photo_folder+f'{todays_date}.gif'
