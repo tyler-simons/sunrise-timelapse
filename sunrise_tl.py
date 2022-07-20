@@ -30,8 +30,9 @@ while int(time_end) > dtdt.now().minute:
     camera = PiCamera()
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%S")
     camera.capture(photo_folder+f"{timestamp}.jpg")
-    time.sleep(60)
     print("Photo Taken")
+    camera.close() 
+    time.sleep(60)
 
 # Compile into a gif
 images = []
