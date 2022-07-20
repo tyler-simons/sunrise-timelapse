@@ -12,7 +12,7 @@ time_end = 2
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
-GCP_GCS_BUCKET = "timelapseposter"
+GCP_GCS_BUCKET = "timelapses"
 delete_folder = False
 
 # Clear out the folder
