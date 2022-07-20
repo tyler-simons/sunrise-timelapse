@@ -39,7 +39,7 @@ while int(time_end) > dtdt.now().minute:
 # Compile into a gif
 images = []
 for filename in os.listdir(photo_folder):
-    images.append(imageio.imread(photo_folder+filename, plugin='DICOM'))
+    images.append(imageio.imread(photo_folder+filename))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
 gif_name = photo_folder+f'{todays_date}.gif'
