@@ -8,7 +8,7 @@ from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 time_start = 5
-time_end = 9
+time_end = 59
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
@@ -26,7 +26,7 @@ for filename in os.listdir(photo_folder):
         print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 # Take the pictures
-while int(time_end) > dtdt.now().hour:
+while int(time_end) > dtdt.now().minute:
     camera = PiCamera()
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%S")
     camera.capture(photo_folder+f"{timestamp}.jpg")
