@@ -5,7 +5,8 @@ import datetime
 import imageio.v2 as imageio
 import os, shutil
 from google.cloud import storage
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
+
 
 print("Starting timelapse camera")
 time_start = 5
@@ -53,10 +54,8 @@ gif_name = f'{todays_date}.gif'
 imageio.mimsave(photo_folder + gif_name, images)
 
 # Push to GCP
-credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    GCP_KEY_PATH
-)
-storage_client = storage.Client(credentials=credentials, project=GCP_PROJECT)
+credentials = service_account.Credentials.from_service_account_file(GCP_KEY_PATH)
+storage_client = storage.Client(project=GCP_PROJECT, credentials=credentials)
 bucket = storage_client.bucket(GCP_GCS_BUCKET)
 blob = bucket.blob(gif_name)
 
