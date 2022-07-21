@@ -59,7 +59,7 @@ storage_client = storage.Client(project=GCP_PROJECT, credentials=credentials)
 bucket = storage_client.bucket(GCP_GCS_BUCKET)
 blob = bucket.blob(gif_name)
 
-blob.upload_from_filename(photo_folder+gif_name)
+blob.upload_from_filename(photo_folder+gif_name, timeout=300)
 
 print(
     f"File {gif_name} uploaded to {GCP_GCS_BUCKET}."
