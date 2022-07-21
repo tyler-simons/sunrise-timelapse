@@ -46,7 +46,7 @@ while int(time_end) > dtdt.now().hour:
 # Compile into a gif
 images = []
 for filename in sorted(os.listdir(photo_folder)):
-    if filename.endswith('.png'):
+    if filename.endswith('.jpg'):
         images.append(imageio.imread(photo_folder+filename))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
