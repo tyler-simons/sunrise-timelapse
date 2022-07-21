@@ -4,7 +4,7 @@ from datetime import datetime as dtdt
 import datetime
 import imageio.v2 as imageio
 import os, shutil
-from gcloud import storage
+from google.cloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 print("Starting timelapse camera")
@@ -56,7 +56,13 @@ imageio.mimsave(photo_folder + gif_name, images)
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
     GCP_KEY_PATH
 )
-client = storage.Client(credentials=credentials, project=GCP_PROJECT)
-bucket = client.get_bucket(GCP_GCS_BUCKET)
+storage_client = storage.Client(credentials=credentials, project=GCP_PROJECT)
+bucket = storage_client.bucket(GCP_GCS_BUCKET)
 blob = bucket.blob(gif_name)
+
 blob.upload_from_filename(photo_folder+gif_name)
+
+print(
+    f"File {gif_name} uploaded to {GCP_GCS_BUCKET}."
+)
+
