@@ -45,13 +45,14 @@ while int(time_end) > dtdt.now().hour:
 
 # Compile into a gif
 images = []
-for filename in os.listdir(photo_folder):
-    images.append(imageio.imread(photo_folder+filename))
+for filename in sorted(os.listdir(photo_folder)):
+    if filename.endswith('.png'):
+        images.append(imageio.imread(photo_folder+filename))
 
 todays_date = datetime.datetime.now().strftime("%Y%m%d")
 gif_name = f'{todays_date}.gif'
 
-imageio.mimsave(photo_folder + gif_name, images)
+imageio.mimsave(photo_folder + gif_name, images, fps=5)
 
 # Push to GCP
 credentials = service_account.Credentials.from_service_account_file(GCP_KEY_PATH)
