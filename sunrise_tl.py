@@ -45,7 +45,9 @@ while int(time_end) > dtdt.now().hour:
 
 # Compile into a gif
 images = []
-for filename in sorted(os.listdir(photo_folder)):
+sorted_pics = sorted(os.listdir(photo_folder))
+print(sorted_pics)
+for filename in sorted_pics:
     if filename.endswith('.jpg'):
         images.append(imageio.imread(photo_folder+filename))
 
