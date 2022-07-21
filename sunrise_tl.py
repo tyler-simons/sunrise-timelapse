@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 print("Starting timelapse camera")
 time_start = 5
-time_end = 3
+time_end = 13
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
@@ -34,8 +34,9 @@ while int(time_end) > dtdt.now().minute:
     camera.resolution = (1024, 768)
     camera.start_preview()
     # Camera warm-up time
-    time.sleep(2)
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%S")
+    camera.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    time.sleep(2)
     camera.capture(photo_folder+f"{timestamp}.jpg")
     print("Photo Taken")
     camera.close() 
