@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 print("Starting timelapse camera")
 time_start = 5
-time_end = 33
+time_end = 8
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
@@ -29,7 +29,7 @@ if delete_folder:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 # Take the pictures
-while int(time_end) > dtdt.now().minute:
+while int(time_end) > dtdt.now().hour:
     camera = PiCamera()
     camera.resolution = (1024, 768)
     camera.start_preview()
@@ -40,7 +40,7 @@ while int(time_end) > dtdt.now().minute:
     camera.capture(photo_folder+f"{timestamp}.jpg")
     print("Photo Taken")
     camera.close() 
-    time.sleep(10)
+    time.sleep(120)
 
 # Compile into a gif
 images = []
