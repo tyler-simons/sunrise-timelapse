@@ -7,6 +7,7 @@ import os, shutil
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
+print("Starting timelapse camera")
 time_start = 5
 time_end = 6
 photo_folder = "/home/pi/sunrises/"
@@ -28,7 +29,7 @@ if delete_folder:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 # Take the pictures
-while int(time_end) > dtdt.now().minute:
+while int(time_end) > dtdt.now().hour:
     camera = PiCamera()
     camera.resolution = (1024, 768)
     camera.start_preview()
@@ -38,7 +39,7 @@ while int(time_end) > dtdt.now().minute:
     camera.capture(photo_folder+f"{timestamp}.jpg")
     print("Photo Taken")
     camera.close() 
-    time.sleep(10)
+    time.sleep(180)
 
 # Compile into a gif
 images = []
