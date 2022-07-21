@@ -35,7 +35,7 @@ while int(time_end) > dtdt.now().hour:
     camera.resolution = (1024, 768)
     camera.start_preview()
     # Camera warm-up time
-    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%S")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     camera.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     time.sleep(2)
     camera.capture(photo_folder+f"{timestamp}.jpg")
