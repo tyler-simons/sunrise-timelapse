@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 print("Starting timelapse camera")
 time_start = 5
-time_end = 6
+time_end = 20
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
