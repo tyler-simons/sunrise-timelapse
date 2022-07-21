@@ -8,7 +8,7 @@ from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 time_start = 5
-time_end = 5
+time_end = 6
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
@@ -30,6 +30,7 @@ if delete_folder:
 # Take the pictures
 while int(time_end) > dtdt.now().minute:
     camera = PiCamera()
+    camera.resolution = (1024, 768)
     camera.start_preview()
     # Camera warm-up time
     time.sleep(2)
