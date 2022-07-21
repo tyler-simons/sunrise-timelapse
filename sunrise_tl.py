@@ -39,7 +39,7 @@ while int(time_end) > dtdt.now().minute:
     camera.capture(photo_folder+f"{timestamp}.jpg")
     print("Photo Taken")
     camera.close() 
-    time.sleep(180)
+    time.sleep(10)
 
 # Compile into a gif
 images = []
