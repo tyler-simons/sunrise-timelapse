@@ -8,7 +8,7 @@ from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 time_start = 5
-time_end = 2
+time_end = 8
 photo_folder = "/home/pi/sunrises/"
 GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
