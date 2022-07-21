@@ -46,7 +46,16 @@ while int(time_end) > dtdt.now().hour:
 # Compile into a gif
 images = []
 sorted_pics = sorted(os.listdir(photo_folder))
-print(sorted_pics)
+
+def getfiles(dirpath):
+    a = [s for s in os.listdir(dirpath)
+         if os.path.isfile(os.path.join(dirpath, s))]
+    a.sort(key=lambda s: os.path.getmtime(os.path.join(dirpath, s)))
+    return a
+
+# Get sorted files by creation time
+sorted_pics = getfiles(photo_folder)
+
 for filename in sorted_pics:
     if filename.endswith('.jpg'):
         images.append(imageio.imread(photo_folder+filename))
