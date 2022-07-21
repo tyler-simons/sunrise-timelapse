@@ -32,7 +32,7 @@ while int(time_end) > dtdt.now().minute:
     camera = PiCamera()
     camera.start_preview()
     # Camera warm-up time
-    sleep(2)
+    time.sleep(2)
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%S")
     camera.capture(photo_folder+f"{timestamp}.jpg")
     print("Photo Taken")
