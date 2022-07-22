@@ -1,13 +1,24 @@
 from twilio.rest import Client
 import os
 
-def send_twilio_message(message_body:str, ACCOUNT_SID:str, AUTH_TOKEN:str, FROM_NUMBER:str, TO_NUMBER:str):
-    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+def send_twilio_message(message_body:str, account_sid:str, auth_token:str, from_number:str, to_number:str):
+    """ Send a text message to a phone number from a twilio account
+    Args:
+        message_body (str): Text to show up in the message
+        account_sid (str): Twilio account SID
+        auth_token (str): Twilio account auth token
+        from_number (str): Twilio provided phone number
+        to_number (str): Phone number to send the message to
+
+    Returns:
+        str: Message sent success
+    """    
+    client = Client(account_sid, auth_token)
     message = client.messages \
                     .create(
                         body=message_body,
-                        from_=FROM_NUMBER,
-                        to=TO_NUMBER
+                        from_=from_number,
+                        to=to_number
                     )
 
     return f"Message Sent: {message.sid}"
