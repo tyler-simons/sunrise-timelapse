@@ -1,0 +1,2 @@
+gcloud functions deploy text_timelapse --runtime=python38 --region=us-west2 --entry-point=text_new_addition --timeout=100s --memory=1024MB --env-vars-file=config.yaml
+--trigger-event google.storage.object.finalize --trigger-resource timelapses
