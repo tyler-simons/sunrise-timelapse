@@ -102,7 +102,7 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
     gif_name = f"{todays_date}.gif"
 
     gif_path = path_to_photo_folder + gif_name
-    print("try gif")
+    print(gif_path)
     try:
         imageio.mimsave(gif_path, images, fps=5)
     except:
