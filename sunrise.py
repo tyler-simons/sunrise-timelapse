@@ -146,6 +146,7 @@ def main():
 
     time_end = os.getenv("TIME_END")
     timelapse_wait = int(os.getenv("TIMELAPSE_WAIT"))
+    perform_timelapse = int(os.getenv("PERFORM_TIMELAPSE"))
 
     gcp_gcs_bucket = os.getenv("GCP_GCS_BUCKET")
     gcp_project = os.getenv("GCP_PROJECT")
@@ -156,8 +157,9 @@ def main():
         clean_timelapse_folder(path_to_photo_folder)
 
     # Perform the timelapse
-    perform_timelapse(path_to_photo_folder, time_end, timelapse_wait)
-    print("Timelapse done")
+    if perform_timelapse == "True":
+        perform_timelapse(path_to_photo_folder, time_end, timelapse_wait)
+        print("Timelapse done")
 
     # Make the gif and get the path
     path_to_gif = make_gif_from_jpgs(path_to_photo_folder)
