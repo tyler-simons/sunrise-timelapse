@@ -137,9 +137,10 @@ def main():
 
     # Load in the yaml file as env variables
     conf = yaml.safe_load(Path("config.yaml").read_text())
+    print(conf)
     for key, value in conf.items():
         os.environ[key] = value
-
+    print("read in vars")
     # Define our config variables
     bool_clean_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
     path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
