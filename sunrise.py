@@ -29,15 +29,16 @@ def clean_timelapse_folder( path_to_photo_folder:str):
     return "Success"
 
 
-def perform_timelapse(path_to_photo_folder:str, hour_end:int, timelapse_wait:int):
+def perform_timelapse(path_to_photo_folder:str, time_end:str, timelapse_wait:int):
     """ Have the picamera take the timelapse photos and store them as jpg files. 
 
     Args:
         path_to_photo_folder (str): The full filepath to the folder where the jpg files are to be captured
-        hour_end (int): Hour from 1 to 24 of when you would like the timelapse to start
+        time_end (str): Local time specified in "%H:%M" 24 hour format 
         timelapse_wait (int): Seconds to wait between timelapse photos
-    """    
-    while int(hour_end) > dtdt.now().hour:
+    """  
+    end_time = datetime.datetime.strptime(time_end, "%H:%M")
+    while int(end_time.hour) > dtdt.now().hour and int(end_time.minute) > dtdt.now().minute:
         # Initalize the camera
         camera = PiCamera()
         camera.resolution = (2592, 1944)
@@ -137,11 +138,14 @@ def main():
     # Define our config variables
     clean_timelapse_folder = os.getenv('CLEAN_TIMELAPSE_FOLDER')
     path_to_photo_folder =  os.getenv('PATH_TO_PHOTO_FOLDER')
-    hour_end =  os.getenv('HOUR_END')
-    gcp_key_path =  os.getenv('GCP_KEY_PATH')
-    gcp_gcs_bucket =  os.getenv('GCP_GCS_BUCKET')
+
+    hour_end =  os.getenv('TIME_END')
     timelapse_wait =  os.getenv('TIMELAPSE_WAIT')
+
+    gcp_gcs_bucket =  os.getenv('GCP_GCS_BUCKET')
     gcp_project =  os.getenv('GCP_PROJECT')
+    gcp_key_path =  os.getenv('GCP_KEY_PATH')
+
 
     # Clean timelapse folder to make room for new files
     if clean_timelapse_folder:
