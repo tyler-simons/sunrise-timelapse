@@ -1,0 +1,17 @@
+# Timelapse options
+HOUR_END: 8
+TIMELAPSE_WAIT: 120
+CLEAN_TIMELAPSE_FOLDER: True
+PATH_TO_PHOTO_FOLDER: "/home/pi/sunrises/"
+
+# GCP information
+GCP_KEY_PATH: "./myproject-362a1ae72b01.json"
+GCP_PROJECT: "MY-GCP-PROJECT"
+GCP_GCS_BUCKET: "timelapses"
+
+# Twilio Information
+ACCOUNT_SID: "ACbbc71829ae90aa2acc7fe61123ee85f"
+AUTH_TOKEN: "ae90aa2acc7fe61123ee85f6266adb8aa"
+FROM_NUMBER: '+15558004653'
+TO_NUMBER: '+1555658136'
+
