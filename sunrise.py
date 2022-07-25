@@ -97,12 +97,14 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
     for filename in sorted_pics:
         if filename.endswith(".jpg"):
             images.append(imageio.imread(path_to_photo_folder + filename))
-
+    print("read in files")
     todays_date = datetime.datetime.now().strftime("%Y%m%d")
     gif_name = f"{todays_date}.gif"
 
     gif_path = path_to_photo_folder + gif_name
+    print("try gif")
     imageio.mimsave(gif_path, images, fps=5)
+    print("gif made")
 
     return gif_path
 
