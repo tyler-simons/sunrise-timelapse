@@ -10,13 +10,13 @@ import yaml
 from pathlib import Path
 
 # Clear out the folder
-def clean_timelapse_folder( path_to_photo_folder:str):
+def clean_timelapse_folder(path_to_photo_folder: str):
     """Remove all of the files from the folder path specified in the arguments
     Args:
         path_to_photo_folder (str): The full path to the folder that should be cleaned
     Returns:
         str: Success
-    """    
+    """
     for filename in os.listdir(path_to_photo_folder):
         file_path = os.path.join(path_to_photo_folder, filename)
         try:
@@ -25,20 +25,23 @@ def clean_timelapse_folder( path_to_photo_folder:str):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
         except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
+            print("Failed to delete %s. Reason: %s" % (file_path, e))
     return "Success"
 
 
-def perform_timelapse(path_to_photo_folder:str, time_end:str, timelapse_wait:int):
-    """ Have the picamera take the timelapse photos and store them as jpg files. 
+def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: int):
+    """Have the picamera take the timelapse photos and store them as jpg files.
 
     Args:
         path_to_photo_folder (str): The full filepath to the folder where the jpg files are to be captured
-        time_end (str): Local time specified in "%H:%M" 24 hour format 
+        time_end (str): Local time specified in "%H:%M" 24 hour format
         timelapse_wait (int): Seconds to wait between timelapse photos
-    """  
+    """
     end_time = datetime.datetime.strptime(time_end, "%H:%M")
-    while int(end_time.hour) > dtdt.now().hour and int(end_time.minute) > dtdt.now().minute:
+    while (
+        int(end_time.hour) > dtdt.now().hour
+        and int(end_time.minute) > dtdt.now().minute
+    ):
         # Initalize the camera
         camera = PiCamera()
         camera.resolution = (2592, 1944)
@@ -46,11 +49,11 @@ def perform_timelapse(path_to_photo_folder:str, time_end:str, timelapse_wait:int
 
         # Create the filename and annotation
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        camera.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
+        camera.annotate_text = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         # Capture the photo
         time.sleep(2)
-        camera.capture(path_to_photo_folder+f"{timestamp}.jpg")
+        camera.capture(path_to_photo_folder + f"{timestamp}.jpg")
         print("Photo Taken")
         camera.close()
 
@@ -59,7 +62,8 @@ def perform_timelapse(path_to_photo_folder:str, time_end:str, timelapse_wait:int
 
     return "Timelapse take"
 
-def get_files_in_order(dirpath:str, sort_by="time_modified"):
+
+def get_files_in_order(dirpath: str, sort_by="time_modified"):
     """Get files in a directory returned as a list in creation order or in filename order. 
 
     Args:
@@ -67,35 +71,34 @@ def get_files_in_order(dirpath:str, sort_by="time_modified"):
 
     Returns:
         _type_: _description_
-    """    ''''''
-    a = [s for s in os.listdir(dirpath)
-         if os.path.isfile(os.path.join(dirpath, s))]
-    
-    if sort_by=="time_modified":  
+    """ """"""
+    a = [s for s in os.listdir(dirpath) if os.path.isfile(os.path.join(dirpath, s))]
+
+    if sort_by == "time_modified":
         a.sort(key=lambda s: os.path.getmtime(os.path.join(dirpath, s)))
         return a
-    elif sort_by=="filename":
+    elif sort_by == "filename":
         return sorted(a)
     else:
         raise
 
 
-def make_gif_from_jpgs(path_to_photo_folder:str):
-    """Given a path to a folder, create a GIF from the .jpg files in the folder. The files will be joined together based on their creation time. 
+def make_gif_from_jpgs(path_to_photo_folder: str):
+    """Given a path to a folder, create a GIF from the .jpg files in the folder. The files will be joined together based on their creation time.
 
     Args:
         path_to_photo_folder (str): _description_
-    """    
+    """
     images = []
     sorted_pics = get_files_in_order(path_to_photo_folder)
 
     # Iterate through the images
     for filename in sorted_pics:
-        if filename.endswith('.jpg'):
-            images.append(imageio.imread(path_to_photo_folder+filename))
+        if filename.endswith(".jpg"):
+            images.append(imageio.imread(path_to_photo_folder + filename))
 
     todays_date = datetime.datetime.now().strftime("%Y%m%d")
-    gif_name = f'{todays_date}.gif'
+    gif_name = f"{todays_date}.gif"
 
     gif_path = path_to_photo_folder + gif_name
     imageio.mimsave(gif_path, images, fps=5)
@@ -103,8 +106,10 @@ def make_gif_from_jpgs(path_to_photo_folder:str):
     return gif_path
 
 
-def push_gif_to_GCP(path_to_gif:str, gcp_key_path:str, gcp_project:str, gcp_gcs_bucket:str):
-    """ Push the GIF up to google cloud storage (GCS)
+def push_gif_to_GCP(
+    path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_gcs_bucket: str
+):
+    """Push the GIF up to google cloud storage (GCS)
 
     Args:
         path_to_gif (str): File path for where the gif is stored
@@ -124,37 +129,37 @@ def push_gif_to_GCP(path_to_gif:str, gcp_key_path:str, gcp_project:str, gcp_gcs_
     blob = bucket.blob(gif_name)
     blob.upload_from_filename(path_to_gif, timeout=300)
 
-    return(f"File {gif_name} uploaded to {gcp_gcs_bucket}.")
+    return f"File {gif_name} uploaded to {gcp_gcs_bucket}."
+
 
 def main():
 
     print("Starting timelapse camera")
 
     # Load in the yaml file as env variables
-    conf = yaml.safe_load(Path('config.yaml').read_text())
+    conf = yaml.safe_load(Path("config.yaml").read_text())
     for key, value in conf.items():
-        os.environ[key]=value
+        os.environ[key] = value
 
     # Define our config variables
-    clean_timelapse_folder = os.getenv('CLEAN_TIMELAPSE_FOLDER')
-    path_to_photo_folder =  os.getenv('PATH_TO_PHOTO_FOLDER')
+    clean_timelapse_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
+    path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
 
-    hour_end =  os.getenv('TIME_END')
-    timelapse_wait =  os.getenv('TIMELAPSE_WAIT')
+    hour_end = os.getenv("TIME_END")
+    timelapse_wait = os.getenv("TIMELAPSE_WAIT")
 
-    gcp_gcs_bucket =  os.getenv('GCP_GCS_BUCKET')
-    gcp_project =  os.getenv('GCP_PROJECT')
-    gcp_key_path =  os.getenv('GCP_KEY_PATH')
-
+    gcp_gcs_bucket = os.getenv("GCP_GCS_BUCKET")
+    gcp_project = os.getenv("GCP_PROJECT")
+    gcp_key_path = os.getenv("GCP_KEY_PATH")
 
     # Clean timelapse folder to make room for new files
     if clean_timelapse_folder:
         clean_timelapse_folder(path_to_photo_folder)
-    
+
     # Perform the timelapse
     perform_timelapse(path_to_photo_folder, hour_end, timelapse_wait)
     print("Timelapse done")
-    
+
     # Make the gif and get the path
     path_to_gif = make_gif_from_jpgs(path_to_photo_folder)
     print("GIF created")
@@ -163,6 +168,6 @@ def main():
     push_gif_to_GCP(path_to_gif, gcp_key_path, gcp_project, gcp_gcs_bucket)
     print("GIF pushed")
 
+
 if __name__ == "__main__":
     main()
-
