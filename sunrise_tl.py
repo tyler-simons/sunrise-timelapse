@@ -15,7 +15,7 @@ GCP_KEY_PATH = "./tylerpersonalprojects-362a1ae72b01.json"
 GCP_PROJECT = "tylerpersonalprojects"
 GCP_GCS_BUCKET = "timelapses"
 delete_folder = True
-timelapse_wait = 120
+timelapse_wait = 60
 
 # Clear out the folder
 if delete_folder:
@@ -32,7 +32,7 @@ if delete_folder:
 # Take the pictures
 while int(time_end) > dtdt.now().hour:
     camera = PiCamera()
-    camera.resolution = (1024, 768)
+    camera.resolution = (2592, 1944)
     camera.start_preview()
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     camera.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
