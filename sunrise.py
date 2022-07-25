@@ -103,12 +103,10 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
     gif_name = f"{todays_date}.gif"
 
     gif_path = path_to_photo_folder + gif_name
-    print(gif_path)
     try:
         imageio.mimsave(gif_path, images, fps=5)
     except:
         print("imagio mimsave failed")
-    print("gif made")
 
     return gif_path
 
@@ -124,7 +122,6 @@ def push_gif_to_GCP(path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_g
     """
     # Extract the base name
     gif_name = os.path.basename(path_to_gif)
-    print("got gif name")
 
     # Authorize and connect
     credentials = service_account.Credentials.from_service_account_file(gcp_key_path)
@@ -144,10 +141,9 @@ def main():
 
     # Load in the yaml file as env variables
     conf = yaml.safe_load(Path("config.yaml").read_text())
-    print(conf)
     for key, value in conf.items():
         os.environ[key] = value
-    print("read in vars")
+
     # Define our config variables
     bool_clean_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
     path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
