@@ -38,9 +38,10 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
         timelapse_wait (int): Seconds to wait between timelapse photos
     """
     end_time = datetime.datetime.strptime(time_end, "%H:%M")
-    while int(end_time.hour) >= dtdt.now().hour:
-
-        if int(end_time.minute) <= dtdt.now().minute:
+    while True:
+        stop_time = end_time.hour * 60 + end_time.minute
+        now_time = dtdt.now().hour * 60 + dtdt.now().minute
+        if now_time > stop_time:
             break
 
         # Initalize the camera
