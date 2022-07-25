@@ -38,7 +38,11 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
         timelapse_wait (int): Seconds to wait between timelapse photos
     """
     end_time = datetime.datetime.strptime(time_end, "%H:%M")
-    while int(end_time.hour) > dtdt.now().hour and int(end_time.minute) > dtdt.now().minute:
+    while int(end_time.hour) >= dtdt.now().hour:
+
+        if int(end_time.minute) < dtdt.now().minute:
+            break
+
         # Initalize the camera
         camera = PiCamera()
         camera.resolution = (2592, 1944)
