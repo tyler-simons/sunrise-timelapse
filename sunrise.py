@@ -137,7 +137,7 @@ def main():
         os.environ[key] = value
 
     # Define our config variables
-    clean_timelapse_folder = bool(os.getenv("CLEAN_TIMELAPSE_FOLDER"))
+    clean_timelapse_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
     path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
 
     time_end = os.getenv("TIME_END")
@@ -148,7 +148,7 @@ def main():
     gcp_key_path = os.getenv("GCP_KEY_PATH")
 
     # Clean timelapse folder to make room for new files
-    if clean_timelapse_folder:
+    if clean_timelapse_folder == "True":
         clean_timelapse_folder(path_to_photo_folder)
 
     # Perform the timelapse
