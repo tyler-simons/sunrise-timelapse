@@ -45,7 +45,7 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
 
         # Initalize the camera
         camera = PiCamera()
-        camera.resolution = (2592, 1944)
+        # camera.resolution = (2592, 1944)
         camera.start_preview()
 
         # Create the filename and annotation
