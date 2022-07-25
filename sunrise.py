@@ -146,7 +146,7 @@ def main():
 
     time_end = os.getenv("TIME_END")
     timelapse_wait = int(os.getenv("TIMELAPSE_WAIT"))
-    perform_timelapse = int(os.getenv("PERFORM_TIMELAPSE"))
+    perform_timelapse = os.getenv("PERFORM_TIMELAPSE")
 
     gcp_gcs_bucket = os.getenv("GCP_GCS_BUCKET")
     gcp_project = os.getenv("GCP_PROJECT")
