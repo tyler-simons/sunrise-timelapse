@@ -38,10 +38,7 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
         timelapse_wait (int): Seconds to wait between timelapse photos
     """
     end_time = datetime.datetime.strptime(time_end, "%H:%M")
-    while (
-        int(end_time.hour) > dtdt.now().hour
-        and int(end_time.minute) > dtdt.now().minute
-    ):
+    while int(end_time.hour) > dtdt.now().hour and int(end_time.minute) > dtdt.now().minute:
         # Initalize the camera
         camera = PiCamera()
         camera.resolution = (2592, 1944)
@@ -106,9 +103,7 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
     return gif_path
 
 
-def push_gif_to_GCP(
-    path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_gcs_bucket: str
-):
+def push_gif_to_GCP(path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_gcs_bucket: str):
     """Push the GIF up to google cloud storage (GCS)
 
     Args:
@@ -145,8 +140,8 @@ def main():
     clean_timelapse_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
     path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
 
-    hour_end = os.getenv("TIME_END")
-    timelapse_wait = os.getenv("TIMELAPSE_WAIT")
+    time_end = os.getenv("TIME_END")
+    timelapse_wait = int(os.getenv("TIMELAPSE_WAIT"))
 
     gcp_gcs_bucket = os.getenv("GCP_GCS_BUCKET")
     gcp_project = os.getenv("GCP_PROJECT")
@@ -157,7 +152,7 @@ def main():
         clean_timelapse_folder(path_to_photo_folder)
 
     # Perform the timelapse
-    perform_timelapse(path_to_photo_folder, hour_end, timelapse_wait)
+    perform_timelapse(path_to_photo_folder, time_end, timelapse_wait)
     print("Timelapse done")
 
     # Make the gif and get the path
