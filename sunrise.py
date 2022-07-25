@@ -103,7 +103,10 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
 
     gif_path = path_to_photo_folder + gif_name
     print("try gif")
-    imageio.mimsave(gif_path, images, fps=5)
+    try:
+        imageio.mimsave(gif_path, images, fps=5)
+    except:
+        print("imagio mimsave failed")
     print("gif made")
 
     return gif_path
@@ -124,17 +127,12 @@ def push_gif_to_GCP(path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_g
 
     # Authorize and connect
     credentials = service_account.Credentials.from_service_account_file(gcp_key_path)
-    print("creds")
     storage_client = storage.Client(project=gcp_project, credentials=credentials)
-    print("storage")
     bucket = storage_client.bucket(gcp_gcs_bucket)
-    print("bucket")
 
     # Create the blob and upload the file
     blob = bucket.blob(gif_name)
-    print("blob")
     blob.upload_from_filename(path_to_gif, timeout=300)
-    print("upload")
 
     return f"File {gif_name} uploaded to {gcp_gcs_bucket}."
 
