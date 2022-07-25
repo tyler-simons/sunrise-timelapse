@@ -137,7 +137,7 @@ def main():
         os.environ[key] = value
 
     # Define our config variables
-    clean_timelapse_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
+    clean_timelapse_folder = bool(os.getenv("CLEAN_TIMELAPSE_FOLDER"))
     path_to_photo_folder = os.getenv("PATH_TO_PHOTO_FOLDER")
 
     time_end = os.getenv("TIME_END")
