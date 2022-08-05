@@ -1,7 +1,7 @@
 # Timelapse options
-HOUR_END: 8
-TIMELAPSE_WAIT: 120
-CLEAN_TIMELAPSE_FOLDER: True
+TIME_END: "8:00"
+TIMELAPSE_WAIT: "120"
+CLEAN_TIMELAPSE_FOLDER: "True"
 PATH_TO_PHOTO_FOLDER: "/home/pi/sunrises/"
 
 # GCP information
