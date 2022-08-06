@@ -19,7 +19,7 @@ Python >3.8 is recommended on your local computer and on the raspberry pi.
 To start, clone the repository onto the pi. 
 
 ```bash
-git clone https://github.com/tyler-simons/sunrise-timelapse/
+git clone https://github.com/tyler-simons/sunrise-timelapse.git
 ```
 
 Then create a virtual environment to run the script and install the requirements
