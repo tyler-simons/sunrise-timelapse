@@ -1,4 +1,4 @@
-from picamera import PiCamera
+from picamera2 import Picamera2, Preview
 import time
 from datetime import datetime as dtdt
 import datetime
@@ -45,19 +45,24 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
             break
 
         # Initalize the camera
-        camera = PiCamera()
-        camera.resolution = (1024, 768)
-        camera.start_preview()
+        picam2 = PiCamera2()
 
         # Create the filename and annotation
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        camera.annotate_text = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        picam2.annotate_text = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Capture the photo
+        preview_config = picam2.create_preview_configuration(main={"size": (1024, 768), "ExposureTime": 7000})
+
+        picam2.configure(preview_config)
+
+        picam2.start_preview(Preview.QTGL)
+        picam2.start()
         time.sleep(2)
-        camera.capture(path_to_photo_folder + f"{timestamp}.jpg")
+
+        metadata = picam2.capture_file(path_to_photo_folder + f"{timestamp}.jpg")
         print("Photo Taken")
-        camera.close()
+        picam2.close()
 
         # Wait
         time.sleep(timelapse_wait)
