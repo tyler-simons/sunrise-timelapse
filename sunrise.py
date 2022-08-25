@@ -104,6 +104,7 @@ def make_gif_from_jpgs(path_to_photo_folder: str):
 
     gif_path = path_to_photo_folder + gif_name
     try:
+        print("trying to make gif")
         imageio.mimsave(gif_path, images, fps=5)
     except:
         print("imagio mimsave failed")
