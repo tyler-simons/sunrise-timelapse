@@ -143,6 +143,7 @@ def main():
     conf = yaml.safe_load(Path("config.yaml").read_text())
     for key, value in conf.items():
         os.environ[key] = value
+    print("read in variables")
 
     # Define our config variables
     bool_clean_folder = os.getenv("CLEAN_TIMELAPSE_FOLDER")
@@ -157,10 +158,12 @@ def main():
     gcp_key_path = os.getenv("GCP_KEY_PATH")
 
     # Clean timelapse folder to make room for new files
+    print("starting to clean folder")
     if bool_clean_folder == "True":
         clean_timelapse_folder(path_to_photo_folder)
 
     # Perform the timelapse
+    print("starting timelapse")
     if perform_timelapse_option == "True":
         perform_timelapse(path_to_photo_folder, time_end, timelapse_wait)
         print("Timelapse done")
