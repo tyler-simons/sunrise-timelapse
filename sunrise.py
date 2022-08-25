@@ -66,14 +66,14 @@ def perform_timelapse(path_to_photo_folder: str, time_end: str, timelapse_wait: 
 
 
 def get_files_in_order(dirpath: str, sort_by="time_modified"):
-    """Get files in a directory returned as a list in creation order or in filename order. 
+    """Get files in a directory returned as a list in creation order or in filename order.
 
     Args:
         dirpath (str): _description_
 
     Returns:
         _type_: _description_
-    """ """"""
+    """
     a = [s for s in os.listdir(dirpath) if os.path.isfile(os.path.join(dirpath, s))]
 
     if sort_by == "time_modified":
