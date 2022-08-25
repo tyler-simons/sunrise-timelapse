@@ -101,12 +101,9 @@ def push_jpgs_to_GCP(path_to_photo_folder: str, gcp_key_path: str, gcp_project: 
     storage_client = storage.Client(project=gcp_project, credentials=credentials)
 
     todays_date = datetime.datetime.now().strftime("%Y%m%d")
-    bucket_name = gcp_gcs_bucket + "/" + todays_date
 
     # create a new bucket
-    bucket = storage_client.bucket(bucket_name)
-    bucket.create()
-    # bucket = storage_client.create_bucket(bucket)  # returns Bucket object
+    bucket = storage_client.bucket(gcp_gcs_bucket)
 
     sorted_pics = get_files_in_order(path_to_photo_folder)
 
@@ -114,7 +111,8 @@ def push_jpgs_to_GCP(path_to_photo_folder: str, gcp_key_path: str, gcp_project: 
     for filename in sorted_pics:
         if filename.endswith(".jpg"):
             # Create the blob and upload the file
-            blob = bucket.blob(filename)
+            bucket_filename = todays_date + "/" + filename
+            blob = bucket.blob(bucket_filename)
             blob.upload_from_filename(path_to_photo_folder + filename)
 
     return f"Photo files uploaded to {gcp_gcs_bucket}."
