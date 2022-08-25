@@ -85,55 +85,39 @@ def get_files_in_order(dirpath: str, sort_by="time_modified"):
         raise
 
 
-def make_gif_from_jpgs(path_to_photo_folder: str):
-    """Given a path to a folder, create a GIF from the .jpg files in the folder. The files will be joined together based on their creation time.
-
-    Args:
-        path_to_photo_folder (str): _description_
-    """
-    images = []
-    sorted_pics = get_files_in_order(path_to_photo_folder)
-
-    # Iterate through the images
-    for filename in sorted_pics:
-        if filename.endswith(".jpg"):
-            images.append(imageio.imread(path_to_photo_folder + filename))
-    print("read in files")
-    todays_date = datetime.datetime.now().strftime("%Y%m%d")
-    gif_name = f"{todays_date}.gif"
-
-    gif_path = path_to_photo_folder + gif_name
-    try:
-        print("trying to make gif")
-        imageio.mimsave(gif_path, images, fps=5)
-    except:
-        print("imagio mimsave failed")
-
-    return gif_path
-
-
-def push_gif_to_GCP(path_to_gif: str, gcp_key_path: str, gcp_project: str, gcp_gcs_bucket: str):
+def push_jpgs_to_GCP(path_to_photo_folder: str, gcp_key_path: str, gcp_project: str, gcp_gcs_bucket: str):
     """Push the GIF up to google cloud storage (GCS)
 
     Args:
-        path_to_gif (str): File path for where the gif is stored
+        path_to_photo_folder (str): File path for where the photos are stored
         gcp_key_path (str): File path to where the GCP JSON file is stored
         gcp_project (str): Name of the GCP project that the GCP key is associated with
         gcp_gcs_bucket (str): Name of the GCS bucket where the GIF should be stored
     """
     # Extract the base name
-    gif_name = os.path.basename(path_to_gif)
 
     # Authorize and connect
     credentials = service_account.Credentials.from_service_account_file(gcp_key_path)
     storage_client = storage.Client(project=gcp_project, credentials=credentials)
-    bucket = storage_client.bucket(gcp_gcs_bucket)
 
-    # Create the blob and upload the file
-    blob = bucket.blob(gif_name)
-    blob.upload_from_filename(path_to_gif, timeout=300)
+    todays_date = datetime.datetime.now().strftime("%Y%m%d")
+    bucket_name = gcp_gcs_bucket + "/" + todays_date
 
-    return f"File {gif_name} uploaded to {gcp_gcs_bucket}."
+    # create a new bucket
+    bucket = storage_client.bucket(bucket_name)
+    bucket.create()
+    # bucket = storage_client.create_bucket(bucket)  # returns Bucket object
+
+    sorted_pics = get_files_in_order(path_to_photo_folder)
+
+    # Iterate through the images
+    for filename in sorted_pics:
+        if filename.endswith(".jpg"):
+            # Create the blob and upload the file
+            blob = bucket.blob(filename)
+            blob.upload_from_filename(path_to_photo_folder + filename)
+
+    return f"Photo files uploaded to {gcp_gcs_bucket}."
 
 
 def main():
@@ -169,12 +153,8 @@ def main():
         perform_timelapse(path_to_photo_folder, time_end, timelapse_wait)
         print("Timelapse done")
 
-    # Make the gif and get the path
-    path_to_gif = make_gif_from_jpgs(path_to_photo_folder)
-    print("GIF created")
-
     # Push into GCP
-    push_gif_to_GCP(path_to_gif, gcp_key_path, gcp_project, gcp_gcs_bucket)
+    push_jpgs_to_GCP(path_to_photo_folder, gcp_key_path, gcp_project, gcp_gcs_bucket)
     print("GIF pushed")
 
 
